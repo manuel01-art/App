@@ -1,0 +1,951 @@
+    <!-- Home Page -->
+    <div id="home-page" class="page p-6 flex flex-col items-center justify-center h-[500px]">
+        <div class="text-center mb-10">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-2">Benvenuto a Games Match</h2>
+            <p class="text-gray-600">Scopri nuovi giochi e salva i tuoi preferiti</p>
+        </div>
+        
+        <div class="flex flex-col space-y-6 w-full max-w-xs">
+            <button id="play-match-btn" class="main-button bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-lg flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                PlayMatch
+            </button>
+            
+            <button id="games-shelter-btn" class="main-button bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-lg flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                </svg>
+                Games Shelter
+            </button>
+        </div>
+    </div>
+
+    <!-- Platform Filter Page -->
+    <div id="platform-filter-page" class="page hidden">
+        <div class="p-4 bg-indigo-600 text-white flex justify-between items-center">
+            <h2 class="text-xl font-bold">Seleziona Piattaforme</h2>
+            <span id="selected-count" class="bg-white text-indigo-600 px-2 py-0.5 rounded-full text-sm font-medium">0</span>
+        </div>
+        
+        <div class="p-4">
+            <p class="text-gray-600 mb-4">Seleziona le piattaforme per filtrare i giochi:</p>
+            
+            <div class="flex">
+                <!-- Colonna sinistra: lista piattaforme -->
+                <div class="w-2/3 pr-4 max-h-[300px] overflow-y-auto">
+                    <div id="platforms-list" class="space-y-2">
+                        <!-- Le piattaforme verranno generate dinamicamente qui -->
+                    </div>
+                </div>
+                
+                <!-- Colonna destra: pulsanti AND/OR -->
+                <div class="w-1/3 flex flex-col space-y-4">
+                    <p class="text-sm text-gray-500 mb-2">Modalità di filtro:</p>
+                    
+                    <button id="filter-or" class="filter-button selected bg-indigo-100 hover:bg-indigo-200 text-indigo-800 py-3 px-4 rounded-lg font-medium shadow-sm transition text-center">
+                        OR
+                        <div class="text-xs mt-1 text-gray-600">Almeno una piattaforma</div>
+                    </button>
+                    
+                    <button id="filter-and" class="filter-button bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 px-4 rounded-lg font-medium shadow-sm transition text-center">
+                        AND
+                        <div class="text-xs mt-1 text-gray-600">Tutte le piattaforme</div>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex justify-between items-center mt-8">
+                <button id="back-from-filter" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Indietro
+                </button>
+                
+                <button id="start-matching" class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg font-medium shadow-md transition">
+                    Inizia
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Play Match Page -->
+    <div id="play-match-page" class="page hidden">
+        <!-- Card Stack -->
+        <div id="card-container" class="relative h-96 flex items-center justify-center">
+            <div class="absolute text-center p-4" id="empty-message" style="display: none;">
+                <p class="text-gray-500 text-lg mb-6">Non ci sono più giochi da valutare!</p>
+                <button id="to-shelter-btn" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-3 px-6 rounded-xl font-bold shadow-lg flex items-center justify-center mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                    </svg>
+                    Games Shelter
+                </button>
+            </div>
+        </div>
+
+        <!-- Flip Button -->
+        <div class="flex justify-center mb-4">
+            <button id="flip-btn" class="flip-button bg-indigo-100 hover:bg-indigo-200 text-indigo-800 py-2 px-6 rounded-lg font-medium shadow-sm transition flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Flip to see more
+            </button>
+            
+            <!-- Nuovo pulsante per nuova selezione (inizialmente nascosto) -->
+            <button id="new-selection-btn" class="flip-button bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-lg font-medium shadow-sm transition flex items-center hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Nuova selezione
+            </button>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex justify-center space-x-8 mt-2 p-4">
+            <button id="dislike-btn" class="button-hover bg-red-500 text-white rounded-full p-4 shadow-lg transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <button id="shelter-btn" class="button-hover bg-indigo-600 text-white rounded-full p-4 shadow-lg transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                </svg>
+            </button>
+            <button id="like-btn" class="button-hover bg-green-500 text-white rounded-full p-4 shadow-lg transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Back to Home Button -->
+        <div class="p-4 text-center">
+            <button id="back-to-home-from-play" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center justify-center mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Home
+            </button>
+        </div>
+    </div>
+
+    <!-- Games Shelter Page -->
+    <div id="games-shelter-page" class="page hidden">
+        <div class="p-4 bg-emerald-600 text-white flex justify-between items-center">
+            <h2 class="text-xl font-bold">Games Shelter</h2>
+            <span id="archive-count" class="bg-white text-emerald-600 px-2 py-0.5 rounded-full text-sm font-medium">0</span>
+        </div>
+        
+        <div id="archive-content" class="p-4 overflow-y-auto max-h-[400px]">
+            <div class="text-center text-gray-500 py-8" id="empty-archive">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                </svg>
+                <p>Non hai ancora salvato nessun gioco.</p>
+            </div>
+            <div id="archived-games" class="space-y-3"></div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="p-4 text-center border-t flex flex-col items-center space-y-3">
+            <button id="back-to-home-from-shelter" class="text-emerald-600 hover:text-emerald-800 font-medium flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Home
+            </button>
+            
+            <!-- Pulsante per tornare al match -->
+            <button id="back-to-match-btn" class="hidden text-indigo-600 hover:text-indigo-800 font-medium flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Torna al Match
+            </button>
+        </div>
+    </div>
+
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="gallery-modal">
+        <div class="gallery-close">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </div>
+        <div class="gallery-container">
+            <h3 class="text-xl font-bold text-gray-800 mb-4" id="gallery-title"></h3>
+            <div id="gallery-images" class="space-y-4">
+                <!-- Le immagini verranno generate dinamicamente qui -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Dati di esempio dei giochi con SVG colorati invece di immagini esterne
+    const games = [
+        {
+            id: 1,
+            title: "The Legend of Zelda: Breath of the Wild",
+            genre: "Avventura, Open World",
+            platform: "Nintendo Switch",
+            year: 2017,
+            color: "#4ade80", // verde
+            icon: "🏹",
+            description: "Un'avventura epica in un vasto mondo aperto. Esplora il regno di Hyrule, risolvi enigmi nei santuari, combatti nemici e scopri i segreti di un mondo devastato dal Calamity Ganon. La libertà di esplorazione e le meccaniche di gioco innovative rendono questa esperienza indimenticabile."
+        },
+        {
+            id: 2,
+            title: "Red Dead Redemption 2",
+            genre: "Azione, Avventura, Open World",
+            platform: "PS4, Xbox One, PC",
+            year: 2018,
+            color: "#f87171", // rosso
+            icon: "🤠",
+            description: "Un capolavoro ambientato nel selvaggio west americano. Vivi la storia di Arthur Morgan, un fuorilegge che deve affrontare la fine dell'era dei cowboy. Con una narrazione profonda, personaggi memorabili e un mondo dettagliato e vivo, questo gioco offre un'esperienza cinematografica senza precedenti."
+        },
+        {
+            id: 3,
+            title: "The Witcher 3: Wild Hunt",
+            genre: "RPG, Open World",
+            platform: "PS4, Xbox One, PC, Switch",
+            year: 2015,
+            color: "#a78bfa", // viola
+            icon: "⚔️",
+            description: "Segui le avventure di Geralt di Rivia, un cacciatore di mostri professionista, in un mondo fantasy ricco di pericoli e meraviglie. Con una trama avvincente, missioni secondarie elaborate e scelte morali complesse, questo gioco di ruolo offre centinaia di ore di gameplay coinvolgente."
+        },
+        {
+            id: 4,
+            title: "Super Mario Odyssey",
+            genre: "Platform, Avventura",
+            platform: "Nintendo Switch",
+            year: 2017,
+            color: "#fb923c", // arancione
+            icon: "🍄",
+            description: "Un'avventura colorata e creativa con l'idraulico più famoso del mondo. Mario viaggia attraverso regni unici e sorprendenti con l'aiuto del suo nuovo amico Cappy. Con meccaniche di gioco innovative e centinaia di lune da collezionare, questo platform 3D è un trionfo di creatività e divertimento."
+        },
+        {
+            id: 5,
+            title: "Cyberpunk 2077",
+            genre: "RPG, Open World",
+            platform: "PS4, PS5, Xbox One, Xbox Series X/S, PC",
+            year: 2020,
+            color: "#fbbf24", // giallo
+            icon: "🤖",
+            description: "Immergiti in Night City, una megalopoli ossessionata dal potere e dalle modifiche corporee. Nei panni di V, un mercenario fuorilegge, dovrai affrontare corporazioni potenti e scoprire il segreto dell'immortalità. Un RPG ambientato in un futuro distopico con una narrazione matura e scelte significative."
+        },
+        {
+            id: 6,
+            title: "God of War",
+            genre: "Azione, Avventura",
+            platform: "PS4, PS5, PC",
+            year: 2018,
+            color: "#60a5fa", // blu
+            icon: "⚡",
+            description: "Un nuovo capitolo nella saga di Kratos, ora ambientato nella mitologia norrena. Accompagna Kratos e suo figlio Atreus in un viaggio emotivo e pieno d'azione per spargere le ceneri della madre del ragazzo. Con un sistema di combattimento rinnovato e una narrazione matura, questo gioco ridefinisce la serie."
+        },
+        {
+            id: 7,
+            title: "Horizon Zero Dawn",
+            genre: "Azione, RPG, Open World",
+            platform: "PS4, PS5, PC",
+            year: 2017,
+            color: "#34d399", // verde acqua
+            icon: "🏹",
+            description: "Esplora un mondo post-apocalittico dove macchine simili a dinosauri dominano la Terra. Nei panni di Aloy, una cacciatrice emarginata, dovrai scoprire i segreti del passato e la tua vera identità. Con un sistema di combattimento tattico e un mondo aperto mozzafiato, questo gioco offre un'esperienza unica."
+        },
+        {
+            id: 8,
+            title: "Animal Crossing: New Horizons",
+            genre: "Simulazione",
+            platform: "Nintendo Switch",
+            year: 2020,
+            color: "#93c5fd", // azzurro
+            icon: "🏝️",
+            description: "Crea la tua isola paradisiaca in questo rilassante gioco di simulazione. Costruisci la tua casa, decora l'isola, interagisci con vicini animali adorabili e vivi al tuo ritmo. Con aggiornamenti stagionali e infinite possibilità creative, questo gioco offre un'esperienza tranquilla e gratificante."
+        }
+    ];
+
+    // Stato dell'applicazione
+    let currentGameIndex = 0;
+    const archivedGames = [];
+    let filteredGames = [];
+    let selectedPlatforms = [];
+    let filterMode = 'OR'; // Default filter mode
+    let isCardFlipped = false;
+    let cameFromPlayMatch = false; // Flag per tracciare se l'utente proviene da PlayMatch
+    let noMoreGames = false; // Flag per tracciare se non ci sono più giochi da valutare
+
+    // Elementi DOM - Pagine
+    const homePage = document.getElementById('home-page');
+    const platformFilterPage = document.getElementById('platform-filter-page');
+    const playMatchPage = document.getElementById('play-match-page');
+    const gamesShelterPage = document.getElementById('games-shelter-page');
+
+    // Elementi DOM - Navigazione
+    const playMatchBtn = document.getElementById('play-match-btn');
+    const gamesShelterBtn = document.getElementById('games-shelter-btn');
+    const backToHomeFromPlay = document.getElementById('back-to-home-from-play');
+    const backToHomeFromShelter = document.getElementById('back-to-home-from-shelter');
+    const shelterBtn = document.getElementById('shelter-btn');
+    const toShelterBtn = document.getElementById('to-shelter-btn');
+    const backFromFilter = document.getElementById('back-from-filter');
+    const startMatching = document.getElementById('start-matching');
+    const backToMatchBtn = document.getElementById('back-to-match-btn');
+
+    // Elementi DOM - PlayMatch
+    const cardContainer = document.getElementById('card-container');
+    const emptyMessage = document.getElementById('empty-message');
+    const likeBtn = document.getElementById('like-btn');
+    const dislikeBtn = document.getElementById('dislike-btn');
+    const flipBtn = document.getElementById('flip-btn');
+    const newSelectionBtn = document.getElementById('new-selection-btn');
+
+    // Elementi DOM - Games Shelter
+    const archivedGamesContainer = document.getElementById('archived-games');
+    const emptyArchive = document.getElementById('empty-archive');
+    const archiveCount = document.getElementById('archive-count');
+
+    // Elementi DOM - Platform Filter
+    const platformsList = document.getElementById('platforms-list');
+    const selectedCount = document.getElementById('selected-count');
+    const filterOrBtn = document.getElementById('filter-or');
+    const filterAndBtn = document.getElementById('filter-and');
+
+    // Elementi DOM - Gallery Modal
+    const galleryModal = document.getElementById('gallery-modal');
+    const galleryClose = document.querySelector('.gallery-close');
+    const galleryTitle = document.getElementById('gallery-title');
+    const galleryImages = document.getElementById('gallery-images');
+
+    // Funzione per estrarre tutte le piattaforme uniche dai giochi
+    function extractPlatforms() {
+        const platformSet = new Set();
+        
+        games.forEach(game => {
+            const platforms = game.platform.split(', ');
+            platforms.forEach(platform => {
+                // Gestisci anche le piattaforme separate da virgola e spazio
+                const subPlatforms = platform.split(', ');
+                subPlatforms.forEach(p => {
+                    platformSet.add(p);
+                });
+            });
+        });
+        
+        return Array.from(platformSet).sort();
+    }
+
+    // Funzione per popolare la lista delle piattaforme
+    function populatePlatformsList() {
+        const platforms = extractPlatforms();
+        platformsList.innerHTML = '';
+        
+        platforms.forEach(platform => {
+            const item = document.createElement('div');
+            item.className = 'platform-item p-3 bg-gray-100 rounded-lg text-gray-700 cursor-pointer hover:bg-gray-200 flex justify-between items-center';
+            item.dataset.platform = platform;
+            
+            item.innerHTML = `
+                <span>${platform}</span>
+                <span class="platform-check hidden text-indigo-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+            `;
+            
+            item.addEventListener('click', () => {
+                item.classList.toggle('selected');
+                const check = item.querySelector('.platform-check');
+                
+                if (item.classList.contains('selected')) {
+                    selectedPlatforms.push(platform);
+                    check.classList.remove('hidden');
+                } else {
+                    selectedPlatforms = selectedPlatforms.filter(p => p !== platform);
+                    check.classList.add('hidden');
+                }
+                
+                selectedCount.textContent = selectedPlatforms.length;
+            });
+            
+            platformsList.appendChild(item);
+        });
+    }
+
+    // Funzione per filtrare i giochi in base alle piattaforme selezionate e rimuovere quelli già salvati
+    function filterGamesByPlatform() {
+        // Prima otteniamo tutti i giochi che corrispondono ai filtri delle piattaforme
+        let filteredByPlatform;
+        
+        if (selectedPlatforms.length === 0) {
+            // Se nessuna piattaforma è selezionata, mostra tutti i giochi
+            filteredByPlatform = [...games];
+        } else if (filterMode === 'OR') {
+            // Modalità OR: il gioco deve essere presente in almeno una delle piattaforme selezionate
+            filteredByPlatform = games.filter(game => {
+                return selectedPlatforms.some(platform => game.platform.includes(platform));
+            });
+        } else {
+            // Modalità AND: il gioco deve essere presente in tutte le piattaforme selezionate
+            filteredByPlatform = games.filter(game => {
+                return selectedPlatforms.every(platform => game.platform.includes(platform));
+            });
+        }
+        
+        // Ora rimuoviamo i giochi che sono già stati salvati nello shelter
+        return filteredByPlatform.filter(game => {
+            // Restituisce true se il gioco NON è presente nell'archivio
+            return !archivedGames.some(archivedGame => archivedGame.id === game.id);
+        });
+    }
+
+    // Funzione per navigare tra le pagine
+    function navigateTo(page) {
+        // Nascondi tutte le pagine
+        homePage.classList.add('hidden');
+        platformFilterPage.classList.add('hidden');
+        playMatchPage.classList.add('hidden');
+        gamesShelterPage.classList.add('hidden');
+        
+        // Mostra la pagina richiesta
+        page.classList.remove('hidden');
+        
+        // Animazione di fade-in
+        page.style.opacity = '0';
+        setTimeout(() => {
+            page.style.opacity = '1';
+        }, 50);
+    }
+
+    // Funzione per aprire la galleria di immagini
+    function openGallery(game) {
+        galleryTitle.textContent = game.title;
+        galleryImages.innerHTML = '';
+        
+        // Crea 3 SVG colorati diversi per la galleria
+        const colors = [game.color, lightenColor(game.color, 20), darkenColor(game.color, 20)];
+        
+        colors.forEach((color, index) => {
+            // Crea un SVG stilizzato per ogni elemento della galleria
+            const svgContainer = document.createElement('div');
+            svgContainer.className = 'gallery-image';
+            svgContainer.style.backgroundColor = color;
+            svgContainer.style.borderRadius = '8px';
+            svgContainer.style.height = '200px';
+            svgContainer.style.display = 'flex';
+            svgContainer.style.alignItems = 'center';
+            svgContainer.style.justifyContent = 'center';
+            svgContainer.style.position = 'relative';
+            svgContainer.style.overflow = 'hidden';
+            
+            // Aggiungi elementi decorativi in base al tipo di gioco
+            const decorations = createGameDecorations(game, index);
+            svgContainer.innerHTML = decorations;
+            
+            // Aggiungi l'icona del gioco
+            const iconElement = document.createElement('div');
+            iconElement.style.position = 'absolute';
+            iconElement.style.fontSize = '3rem';
+            iconElement.textContent = game.icon;
+            svgContainer.appendChild(iconElement);
+            
+            galleryImages.appendChild(svgContainer);
+        });
+        
+        // Mostra la galleria con animazione
+        galleryModal.classList.add('active');
+        
+        // Impedisci lo scroll della pagina sottostante
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Funzione per creare decorazioni SVG in base al tipo di gioco
+    function createGameDecorations(game, variationIndex) {
+        let decorations = '';
+        
+        // Aggiungi decorazioni in base al genere del gioco
+        if (game.genre.includes('Open World')) {
+            // Decorazioni per giochi open world (montagne, alberi)
+            decorations += `
+                <svg width="100%" height="100%" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" style="position: absolute; bottom: 0; left: 0; opacity: 0.3;">
+                    <path d="M0 100 L40 60 L60 80 L100 30 L140 70 L180 40 L200 60 L200 100 Z" fill="${darkenColor(game.color, 30)}" />
+                    <circle cx="${30 + variationIndex * 20}" cy="50" r="8" fill="${lightenColor(game.color, 40)}" />
+                </svg>
+            `;
+        } else if (game.genre.includes('Platform')) {
+            // Decorazioni per platform (blocchi, piattaforme)
+            decorations += `
+                <svg width="100%" height="100%" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" style="position: absolute; bottom: 0; left: 0; opacity: 0.3;">
+                    <rect x="20" y="70" width="30" height="10" fill="${lightenColor(game.color, 40)}" />
+                    <rect x="70" y="50" width="40" height="10" fill="${lightenColor(game.color, 40)}" />
+                    <rect x="130" y="60" width="50" height="10" fill="${lightenColor(game.color, 40)}" />
+                    <rect x="${variationIndex * 30}" y="${80 - variationIndex * 10}" width="20" height="20" fill="${darkenColor(game.color, 20)}" />
+                </svg>
+            `;
+        } else if (game.genre.includes('RPG')) {
+            // Decorazioni per RPG (spade, scudi, pozioni)
+            decorations += `
+                <svg width="100%" height="100%" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; right: 0; opacity: 0.3;">
+                    <path d="M150 10 L170 30 L160 40 L140 20 Z" fill="${lightenColor(game.color, 40)}" />
+                    <circle cx="${50 + variationIndex * 30}" cy="${30 + variationIndex * 10}" r="10" fill="${darkenColor(game.color, 20)}" />
+                </svg>
+            `;
+        } else if (game.genre.includes('Simulazione')) {
+            // Decorazioni per simulazione (case, alberi)
+            decorations += `
+                <svg width="100%" height="100%" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" style="position: absolute; bottom: 0; left: 0; opacity: 0.3;">
+                    <rect x="30" y="50" width="40" height="30" fill="${darkenColor(game.color, 20)}" />
+                    <polygon points="30,50 50,30 70,50" fill="${darkenColor(game.color, 30)}" />
+                    <rect x="${100 + variationIndex * 20}" y="60" width="10" height="40" fill="${darkenColor(game.color, 40)}" />
+                    <circle cx="${105 + variationIndex * 20}" cy="40" r="15" fill="${lightenColor(game.color, 20)}" />
+                </svg>
+            `;
+        } else {
+            // Decorazioni generiche per altri generi
+            decorations += `
+                <svg width="100%" height="100%" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0; opacity: 0.3;">
+                    <circle cx="${50 + variationIndex * 40}" cy="${30 + variationIndex * 20}" r="20" fill="${lightenColor(game.color, 30)}" />
+                    <rect x="${20 + variationIndex * 30}" y="${60 - variationIndex * 10}" width="30" height="30" fill="${darkenColor(game.color, 20)}" />
+                </svg>
+            `;
+        }
+        
+        return decorations;
+    }
+
+    // Funzione per schiarire un colore
+    function lightenColor(color, percent) {
+        const num = parseInt(color.replace('#', ''), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = (num >> 16) + amt;
+        const G = (num >> 8 & 0x00FF) + amt;
+        const B = (num & 0x0000FF) + amt;
+        
+        return '#' + (
+            0x1000000 +
+            (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+            (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+            (B < 255 ? (B < 1 ? 0 : B) : 255)
+        ).toString(16).slice(1);
+    }
+
+    // Funzione per scurire un colore
+    function darkenColor(color, percent) {
+        const num = parseInt(color.replace('#', ''), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = (num >> 16) - amt;
+        const G = (num >> 8 & 0x00FF) - amt;
+        const B = (num & 0x0000FF) - amt;
+        
+        return '#' + (
+            0x1000000 +
+            (R > 0 ? (R < 255 ? R : 255) : 0) * 0x10000 +
+            (G > 0 ? (G < 255 ? G : 255) : 0) * 0x100 +
+            (B > 0 ? (B < 255 ? B : 255) : 0)
+        ).toString(16).slice(1);
+    }
+
+    // Funzione per chiudere la galleria di immagini
+    function closeGallery() {
+        galleryModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Funzione per creare una card di gioco con fronte e retro
+    function createGameCard(game) {
+        const card = document.createElement('div');
+        card.className = 'card absolute w-full bg-white rounded-xl shadow-lg overflow-hidden h-[380px]';
+        card.id = `game-${game.id}`;
+        
+        // Crea un SVG colorato per il gioco
+        const gameSvg = `
+            <div class="game-svg relative" style="background-color: ${game.color};">
+                <div class="absolute inset-0" style="opacity: 0.3;">
+                    ${createGameDecorations(game, 1)}
+                </div>
+                <div class="flex items-center justify-center h-full">
+                    <span style="font-size: 4rem;">${game.icon}</span>
+                </div>
+                <div class="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full px-3 py-1 text-sm font-medium">
+                    ${game.year}
+                </div>
+            </div>
+        `;
+        
+        card.innerHTML = `
+            <div class="card-inner w-full h-full">
+                <!-- Fronte della card -->
+                <div class="card-front bg-white">
+                    ${gameSvg}
+                    <div class="p-4">
+                        <h2 class="text-xl font-bold text-gray-800 mb-2">${game.title}</h2>
+                        <p class="text-gray-600 mb-1"><span class="font-medium">Genere:</span> ${game.genre}</p>
+                        <p class="text-gray-600"><span class="font-medium">Piattaforma:</span> ${game.platform}</p>
+                    </div>
+                </div>
+                
+                <!-- Retro della card -->
+                <div class="card-back p-6 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">${game.title}</h2>
+                        <div class="bg-indigo-50 p-4 rounded-lg">
+                            <p class="text-gray-700 leading-relaxed">${game.description}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-sm text-gray-500">${game.platform}</div>
+                        
+                        <!-- Pulsante Galleria Immagini -->
+                        <button class="gallery-btn bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-3 py-1 rounded-lg text-sm font-medium flex items-center" data-game-id="${game.id}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Galleria immagini
+                        </button>
+                        
+                        <div class="text-sm font-medium bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">${game.year}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Aggiungi event listener per il pulsante della galleria
+        setTimeout(() => {
+            const galleryBtn = card.querySelector('.gallery-btn');
+            if (galleryBtn) {
+                galleryBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Previeni la propagazione dell'evento
+                    const gameId = parseInt(galleryBtn.dataset.gameId);
+                    const selectedGame = games.find(g => g.id === gameId);
+                    if (selectedGame) {
+                        openGallery(selectedGame);
+                    }
+                });
+            }
+        }, 0);
+        
+        return card;
+    }
+
+    // Funzione per mostrare il gioco corrente
+    function showCurrentGame() {
+        // Rimuovi tutte le card esistenti
+        const existingCards = cardContainer.querySelectorAll('.card');
+        existingCards.forEach(card => card.remove());
+        
+        // Reset dello stato della card
+        isCardFlipped = false;
+        
+        if (currentGameIndex < filteredGames.length) {
+            const game = filteredGames[currentGameIndex];
+            const card = createGameCard(game);
+            cardContainer.appendChild(card);
+            emptyMessage.style.display = 'none';
+            noMoreGames = false; // Ci sono ancora giochi da valutare
+            
+            // Mostra il pulsante flip e nascondi il pulsante nuova selezione
+            flipBtn.classList.remove('hidden');
+            newSelectionBtn.classList.add('hidden');
+            updateFlipButtonText();
+        } else {
+            emptyMessage.style.display = 'block';
+            noMoreGames = true; // Non ci sono più giochi da valutare
+            
+            // Nascondi il pulsante flip e mostra il pulsante nuova selezione
+            flipBtn.classList.add('hidden');
+            newSelectionBtn.classList.remove('hidden');
+        }
+    }
+
+    // Funzione per gestire il flip della card
+    function handleFlip() {
+        if (currentGameIndex >= filteredGames.length) return;
+        
+        const card = document.querySelector('.card');
+        if (!card) return;
+        
+        isCardFlipped = !isCardFlipped;
+        
+        if (isCardFlipped) {
+            card.classList.add('flipped');
+        } else {
+            card.classList.remove('flipped');
+        }
+        
+        updateFlipButtonText();
+    }
+
+    // Funzione per aggiornare il testo del pulsante flip
+    function updateFlipButtonText() {
+        if (isCardFlipped) {
+            flipBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Flip back
+            `;
+        } else {
+            flipBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Flip to see more
+            `;
+        }
+    }
+
+    // Funzione per gestire il like
+    function handleLike() {
+        if (currentGameIndex >= filteredGames.length) return;
+        
+        const currentGame = filteredGames[currentGameIndex];
+        const card = document.getElementById(`game-${currentGame.id}`);
+        
+        // Animazione swipe right
+        card.classList.add('swipe-right');
+        
+        // Aggiungi all'archivio
+        if (!archivedGames.some(game => game.id === currentGame.id)) {
+            archivedGames.push(currentGame);
+            updateArchiveCount();
+        }
+        
+        // Passa al prossimo gioco dopo l'animazione
+        setTimeout(() => {
+            card.remove();
+            currentGameIndex++;
+            showCurrentGame();
+        }, 300);
+    }
+
+    // Funzione per gestire il dislike con effetto di dissolvenza
+    function handleDislike() {
+        if (currentGameIndex >= filteredGames.length) return;
+        
+        const currentGame = filteredGames[currentGameIndex];
+        const card = document.getElementById(`game-${currentGame.id}`);
+        
+        // Animazione di dissolvenza
+        card.classList.add('swipe-left');
+        
+        // Passa al prossimo gioco dopo l'animazione
+        setTimeout(() => {
+            card.remove();
+            currentGameIndex++;
+            showCurrentGame();
+        }, 300);
+    }
+
+    // Funzione per aggiornare il contatore dell'archivio
+    function updateArchiveCount() {
+        archiveCount.textContent = archivedGames.length;
+    }
+
+    // Funzione per mostrare l'archivio
+    function showArchive() {
+        if (archivedGames.length === 0) {
+            emptyArchive.style.display = 'block';
+            archivedGamesContainer.innerHTML = '';
+        } else {
+            emptyArchive.style.display = 'none';
+            archivedGamesContainer.innerHTML = '';
+            
+            archivedGames.forEach(game => {
+                const item = document.createElement('div');
+                item.className = 'archived-item bg-white rounded-lg shadow p-3 flex items-center';
+                
+                // Crea un mini SVG colorato per l'elemento dell'archivio
+                const miniSvg = `
+                    <div class="w-16 h-16 flex-shrink-0 overflow-hidden rounded" style="background-color: ${game.color}; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 1.5rem;">${game.icon}</span>
+                    </div>
+                `;
+                
+                item.innerHTML = `
+                    ${miniSvg}
+                    <div class="ml-3 flex-grow">
+                        <h3 class="font-medium text-gray-800">${game.title}</h3>
+                        <p class="text-sm text-gray-500">${game.platform} • ${game.year}</p>
+                    </div>
+                    <button class="remove-game text-gray-400 hover:text-red-500" data-id="${game.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                `;
+                
+                archivedGamesContainer.appendChild(item);
+            });
+            
+            // Aggiungi event listener per i pulsanti di rimozione
+            document.querySelectorAll('.remove-game').forEach(button => {
+                button.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-id'));
+                    const index = archivedGames.findIndex(game => game.id === gameId);
+                    
+                    if (index !== -1) {
+                        archivedGames.splice(index, 1);
+                        updateArchiveCount();
+                        showArchive();
+                    }
+                });
+            });
+        }
+        
+        // Mostra o nascondi il pulsante "Torna al Match" in base alla provenienza
+        if (cameFromPlayMatch) {
+            backToMatchBtn.classList.remove('hidden');
+            
+            // Aggiorna il testo del pulsante in base alla disponibilità di giochi
+            if (noMoreGames) {
+                backToMatchBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Nuova Selezione
+                `;
+            } else {
+                backToMatchBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Torna al Match
+                `;
+            }
+        } else {
+            backToMatchBtn.classList.add('hidden');
+        }
+    }
+
+    // Event listeners - Navigazione
+    playMatchBtn.addEventListener('click', () => {
+        navigateTo(platformFilterPage);
+        populatePlatformsList();
+        selectedPlatforms = [];
+        selectedCount.textContent = '0';
+        
+        // Reset filter mode to default
+        filterMode = 'OR';
+        filterOrBtn.classList.add('selected');
+        filterAndBtn.classList.remove('selected');
+    });
+    
+    gamesShelterBtn.addEventListener('click', () => {
+        cameFromPlayMatch = false; // Non proviene da PlayMatch
+        navigateTo(gamesShelterPage);
+        showArchive();
+    });
+    
+    backToHomeFromPlay.addEventListener('click', () => {
+        navigateTo(homePage);
+    });
+    
+    backToHomeFromShelter.addEventListener('click', () => {
+        navigateTo(homePage);
+    });
+    
+    shelterBtn.addEventListener('click', () => {
+        cameFromPlayMatch = true; // Proviene da PlayMatch
+        navigateTo(gamesShelterPage);
+        showArchive();
+    });
+    
+    toShelterBtn.addEventListener('click', () => {
+        cameFromPlayMatch = true; // Proviene da PlayMatch
+        navigateTo(gamesShelterPage);
+        showArchive();
+    });
+    
+    backFromFilter.addEventListener('click', () => {
+        navigateTo(homePage);
+    });
+    
+    startMatching.addEventListener('click', () => {
+        filteredGames = filterGamesByPlatform();
+        currentGameIndex = 0;
+        navigateTo(playMatchPage);
+        showCurrentGame();
+    });
+    
+    // Event listener per il pulsante "Torna al Match"
+    backToMatchBtn.addEventListener('click', () => {
+        if (noMoreGames) {
+            // Se non ci sono più giochi, torna alla selezione delle piattaforme
+            navigateTo(platformFilterPage);
+            populatePlatformsList();
+            selectedPlatforms = [];
+            selectedCount.textContent = '0';
+            
+            // Reset filter mode to default
+            filterMode = 'OR';
+            filterOrBtn.classList.add('selected');
+            filterAndBtn.classList.remove('selected');
+        } else {
+            // Altrimenti torna al match corrente
+            navigateTo(playMatchPage);
+            showCurrentGame();
+        }
+    });
+
+    // Event listener per il pulsante "Nuova selezione"
+    newSelectionBtn.addEventListener('click', () => {
+        navigateTo(platformFilterPage);
+        populatePlatformsList();
+        selectedPlatforms = [];
+        selectedCount.textContent = '0';
+        
+        // Reset filter mode to default
+        filterMode = 'OR';
+        filterOrBtn.classList.add('selected');
+        filterAndBtn.classList.remove('selected');
+    });
+
+    // Event listeners - Filter Mode
+    filterOrBtn.addEventListener('click', () => {
+        filterMode = 'OR';
+        filterOrBtn.classList.add('selected');
+        filterAndBtn.classList.remove('selected');
+    });
+    
+    filterAndBtn.addEventListener('click', () => {
+        filterMode = 'AND';
+        filterAndBtn.classList.add('selected');
+        filterOrBtn.classList.remove('selected');
+    });
+
+    // Event listeners - PlayMatch
+    likeBtn.addEventListener('click', handleLike);
+    dislikeBtn.addEventListener('click', handleDislike);
+    flipBtn.addEventListener('click', handleFlip);
+
+    // Event listeners - Gallery
+    galleryClose.addEventListener('click', closeGallery);
+    // Chiudi la galleria anche cliccando fuori dal contenuto
+    galleryModal.addEventListener('click', (e) => {
+        if (e.target === galleryModal) {
+            closeGallery();
+        }
+    });
+    // Chiudi la galleria con il tasto ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && galleryModal.classList.contains('active')) {
+            closeGallery();
+        }
+    });
+
+    // Inizializza l'app
+    updateArchiveCount();
+</script>
